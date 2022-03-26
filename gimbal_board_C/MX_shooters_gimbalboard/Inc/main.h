@@ -39,7 +39,12 @@ extern "C" {
 #include "rc.h"
 #include "canbus.h"
 #include "infoproc.h"
-
+#include "gimbctrl.h"
+#include "weapctrl.h"
+#include "init.h"
+#include "mpu.h"
+#include "math.h"
+#include "cmsis_os.h"
 
 /* USER CODE END Includes */
 

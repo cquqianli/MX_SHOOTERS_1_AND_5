@@ -32,7 +32,20 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "pid.h"
+#include "filters.h"
+#include "motorlib.h"
+#include "dma_bsp.h"
+#include "canbus.h"
+#include "math.h"
+#include "roboconfig.h"
+#include "chasctrl.h"
+#include "infoproc.h"
+#include "usart.h"
+#include "ref.h"
+#include "scaps.h"
+#include "cmsis_os.h"
+#include "UI.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -58,6 +71,9 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define yawzero_Pin GPIO_PIN_12
+#define yawzero_GPIO_Port GPIOD
+#define yawzero_EXTI_IRQn EXTI15_10_IRQn
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

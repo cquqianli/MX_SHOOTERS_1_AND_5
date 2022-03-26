@@ -44,6 +44,10 @@ mx_shooters_gimbalboard\main.o: ..\custom\devices\Inc\canbus.h
 mx_shooters_gimbalboard\main.o: ../Inc/can.h
 mx_shooters_gimbalboard\main.o: ..\custom\tasks\Inc\infoproc.h
 mx_shooters_gimbalboard\main.o: ..\custom\tasks\Inc\roboconfig.h
+mx_shooters_gimbalboard\main.o: ..\custom\tasks\Inc\gimbctrl.h
+mx_shooters_gimbalboard\main.o: ..\custom\tasks\Inc\weapctrl.h
+mx_shooters_gimbalboard\main.o: ..\custom\tasks\Inc\init.h
+mx_shooters_gimbalboard\main.o: ..\custom\devices\Inc\mpu.h
 mx_shooters_gimbalboard\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
 mx_shooters_gimbalboard\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 mx_shooters_gimbalboard\main.o: ../Inc/FreeRTOSConfig.h

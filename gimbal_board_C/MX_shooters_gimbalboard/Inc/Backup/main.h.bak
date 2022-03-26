@@ -38,10 +38,11 @@ extern "C" {
 #include "dma_bsp.h"
 #include "rc.h"
 #include "canbus.h"
-#include "FreeRTOS.h"
-#include "task.h"
-#include "cmsis_os2.h"
-#include "bsp_delay.h"
+#include "infoproc.h"
+#include "gimbctrl.h"
+#include "weapctrl.h"
+#include "mpu.h"
+#include "math.h"
 
 
 /* USER CODE END Includes */

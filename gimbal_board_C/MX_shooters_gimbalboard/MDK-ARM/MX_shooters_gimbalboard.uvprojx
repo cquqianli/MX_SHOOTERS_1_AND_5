@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;            ../Drivers/STM32F4xx_HAL_Driver/Inc;            ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;            ../Middlewares/Third_Party/FreeRTOS/Source/include;            ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;            ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;            ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;            ../Drivers/CMSIS/Include;            ..\custom\devices\Inc;            ..\custom\libs_bsps\Inc;            ..\custom\tasks\Inc</IncludePath>
+              <IncludePath>../Inc;             ../Drivers/STM32F4xx_HAL_Driver/Inc;             ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;             ../Middlewares/Third_Party/FreeRTOS/Source/include;             ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;             ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;             ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;             ../Drivers/CMSIS/Include;             ..\custom\devices\Inc;             ..\custom\libs_bsps\Inc;             ..\custom\tasks\Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -603,6 +603,11 @@
               <FileType>1</FileType>
               <FilePath>..\custom\devices\Src\rc.c</FilePath>
             </File>
+            <File>
+              <FileName>mpu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\custom\devices\Src\mpu.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -612,6 +617,21 @@
               <FileName>infoproc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\custom\tasks\Src\infoproc.c</FilePath>
+            </File>
+            <File>
+              <FileName>gimbctrl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\custom\tasks\Src\gimbctrl.c</FilePath>
+            </File>
+            <File>
+              <FileName>weapctrl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\custom\tasks\Src\weapctrl.c</FilePath>
+            </File>
+            <File>
+              <FileName>init.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\custom\tasks\Src\init.c</FilePath>
             </File>
           </Files>
         </Group>

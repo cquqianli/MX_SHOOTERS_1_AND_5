@@ -1,0 +1,14 @@
+mx_shooters_chassisboard\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/croutine.c
+mx_shooters_chassisboard\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+mx_shooters_chassisboard\croutine.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+mx_shooters_chassisboard\croutine.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+mx_shooters_chassisboard\croutine.o: ../Inc/FreeRTOSConfig.h
+mx_shooters_chassisboard\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+mx_shooters_chassisboard\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+mx_shooters_chassisboard\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+mx_shooters_chassisboard\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+mx_shooters_chassisboard\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+mx_shooters_chassisboard\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+mx_shooters_chassisboard\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+mx_shooters_chassisboard\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/croutine.h
+mx_shooters_chassisboard\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h

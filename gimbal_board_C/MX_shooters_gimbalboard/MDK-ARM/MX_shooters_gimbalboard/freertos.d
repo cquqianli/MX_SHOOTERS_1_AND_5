@@ -53,5 +53,9 @@ mx_shooters_gimbalboard\freertos.o: ..\custom\devices\Inc\canbus.h
 mx_shooters_gimbalboard\freertos.o: ../Inc/can.h
 mx_shooters_gimbalboard\freertos.o: ..\custom\tasks\Inc\infoproc.h
 mx_shooters_gimbalboard\freertos.o: ..\custom\tasks\Inc\roboconfig.h
+mx_shooters_gimbalboard\freertos.o: ..\custom\tasks\Inc\gimbctrl.h
+mx_shooters_gimbalboard\freertos.o: ..\custom\tasks\Inc\weapctrl.h
+mx_shooters_gimbalboard\freertos.o: ..\custom\tasks\Inc\init.h
+mx_shooters_gimbalboard\freertos.o: ..\custom\devices\Inc\mpu.h
 mx_shooters_gimbalboard\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
 mx_shooters_gimbalboard\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h

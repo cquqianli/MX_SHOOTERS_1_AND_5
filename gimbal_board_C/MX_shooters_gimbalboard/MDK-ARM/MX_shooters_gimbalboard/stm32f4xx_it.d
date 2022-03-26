@@ -44,7 +44,11 @@ mx_shooters_gimbalboard\stm32f4xx_it.o: ..\custom\devices\Inc\canbus.h
 mx_shooters_gimbalboard\stm32f4xx_it.o: ../Inc/can.h
 mx_shooters_gimbalboard\stm32f4xx_it.o: ..\custom\tasks\Inc\infoproc.h
 mx_shooters_gimbalboard\stm32f4xx_it.o: ..\custom\tasks\Inc\roboconfig.h
-mx_shooters_gimbalboard\stm32f4xx_it.o: ../Inc/stm32f4xx_it.h
+mx_shooters_gimbalboard\stm32f4xx_it.o: ..\custom\tasks\Inc\gimbctrl.h
+mx_shooters_gimbalboard\stm32f4xx_it.o: ..\custom\tasks\Inc\weapctrl.h
+mx_shooters_gimbalboard\stm32f4xx_it.o: ..\custom\tasks\Inc\init.h
+mx_shooters_gimbalboard\stm32f4xx_it.o: ..\custom\devices\Inc\mpu.h
+mx_shooters_gimbalboard\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
 mx_shooters_gimbalboard\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 mx_shooters_gimbalboard\stm32f4xx_it.o: ../Inc/FreeRTOSConfig.h
 mx_shooters_gimbalboard\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
@@ -54,3 +58,5 @@ mx_shooters_gimbalboard\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Sour
 mx_shooters_gimbalboard\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
 mx_shooters_gimbalboard\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 mx_shooters_gimbalboard\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+mx_shooters_gimbalboard\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
+mx_shooters_gimbalboard\stm32f4xx_it.o: ../Inc/stm32f4xx_it.h

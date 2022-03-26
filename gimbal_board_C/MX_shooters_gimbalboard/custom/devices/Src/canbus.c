@@ -87,73 +87,22 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 
 	if(hcan->Instance==CAN1)
 	{
-//		switch(rx_header.StdId)
-//		{
-//			case 0x201:
-//			{
-//					wheel[0].tempdata.temp_angle[1] = (rx_data[0]<<8)|(rx_data[1]);
-//					wheel[0].tempdata.temp_angle[1] =wheel[0].tempdata.temp_angle[1]*360.0f/0x1fff-180.f;
-//					gearmotor_angledecoder(&wheel[0]);
-//					wheel[0].tempdata.speed = ((rx_data[2]<<8)|(rx_data[3]));
-//					wheel[0].tempdata.current = (rx_data[4]<<8)|(rx_data[5]);
-//					
-//					wheel[0].curmotorctrlinfo.speed = wheel[0].tempdata.speed;
-//					wheel[0].curmotorctrlinfo.speed = wheel[0].curmotorctrlinfo.speed/wheel[0].parameter.reductiongearratio;
-////					wheel[0].curmotorctrlinfo.current = wheel[0].tempdata.current;
-////					wheel[0].curmotorctrlinfo.current =wheel[0].curmotorctrlinfo.current/10000*wheel[0].parameter.current_limit[1];
-//				
-//			}break;
-//			case 0x202:
-//			{
-//					wheel[1].tempdata.temp_angle[1] = (rx_data[0]<<8)|(rx_data[1]);
-//					wheel[1].tempdata.temp_angle[1] =wheel[1].tempdata.temp_angle[1]*360.0f/0x1fff-180.f;
-//					gearmotor_angledecoder(&wheel[1]);
-//					wheel[1].tempdata.speed = ((rx_data[2]<<8)|(rx_data[3]));
-//					wheel[1].tempdata.current = (rx_data[4]<<8)|(rx_data[5]);
-//					
-//					wheel[1].curmotorctrlinfo.speed = wheel[1].tempdata.speed;
-//					wheel[1].curmotorctrlinfo.speed = wheel[1].curmotorctrlinfo.speed/wheel[1].parameter.reductiongearratio;
-////					wheel[1].curmotorctrlinfo.current = wheel[1].tempdata.current;
-////					wheel[1].curmotorctrlinfo.current =wheel[1].curmotorctrlinfo.current/10000*wheel[1].parameter.current_limit[1];
-//			}break;
-//			case 0x203:
-//			{
-//					wheel[2].tempdata.temp_angle[1] = (rx_data[0]<<8)|(rx_data[1]);
-//					wheel[2].tempdata.temp_angle[1] =wheel[2].tempdata.temp_angle[1]*360.0f/0x1fff-180.f;
-//					gearmotor_angledecoder(&wheel[2]);
-//					wheel[2].tempdata.speed = ((rx_data[2]<<8)|(rx_data[3]));
-//					wheel[2].tempdata.current = (rx_data[4]<<8)|(rx_data[5]);
-//					wheel[2].curmotorctrlinfo.speed = wheel[2].tempdata.speed;
-//					wheel[2].curmotorctrlinfo.speed = wheel[2].curmotorctrlinfo.speed/wheel[2].parameter.reductiongearratio;
-////					wheel[2].curmotorctrlinfo.current = wheel[2].tempdata.current;
-////					wheel[2].curmotorctrlinfo.current =wheel[2].curmotorctrlinfo.current/10000*wheel[2].parameter.current_limit[1];
-//			}break;
-//			case 0x204:
-//			{
-//					wheel[3].tempdata.temp_angle[1] = (rx_data[0]<<8)|(rx_data[1]);
-//					wheel[3].tempdata.temp_angle[1] =wheel[3].tempdata.temp_angle[1]*360.0f/0x1fff-180.f;
-//					gearmotor_angledecoder(&wheel[3]);
-//					wheel[3].tempdata.speed = ((rx_data[2]<<8)|(rx_data[3]));
-//					wheel[3].tempdata.current = (rx_data[4]<<8)|(rx_data[5]);
-//					
-//					wheel[3].curmotorctrlinfo.speed = wheel[3].tempdata.speed;
-//					wheel[3].curmotorctrlinfo.speed = wheel[3].curmotorctrlinfo.speed/wheel[3].parameter.reductiongearratio;
-////					wheel[3].curmotorctrlinfo.current = wheel[3].tempdata.current;
-////					wheel[3].curmotorctrlinfo.current =wheel[3].curmotorctrlinfo.current/10000*wheel[3].parameter.current_limit[1];
-//			}break;
-
-//			case 0x205:
-//			{
-//					yaw.tempdata.temp_angle[1] = (rx_data[0]<<8)|(rx_data[1]);
-//					yaw.curmotorctrlinfo.angle =yaw.tempdata.temp_angle[1]*360.0f/0x1fff-180.f;
-//					yaw.curmotorctrlinfo.speed = ((rx_data[2]<<8)|(rx_data[3]));
-//					yaw.tempdata.current = (rx_data[4]<<8)|(rx_data[5]);
-//					
-////					yaw.curmotorctrlinfo.current = yaw.tempdata.current;
-////					yaw.curmotorctrlinfo.current =yaw.curmotorctrlinfo.current/10000*yaw.parameter.current_limit[1];
-//			}break;
-//			
-//		}
+		switch(rx_header.StdId)
+		{
+			case 0x205:
+			{
+				canrxtomotinfo(&yawinfo,rx_data);
+			}break;
+			case 0x206:
+			{
+				canrxtomotinfo(&pitinfo,rx_data);
+			}break;
+			case 0x201:
+			{
+				canrxtomotinfo(&triginfo,rx_data);
+			}break;
+			
+		}
 		//HAL_IWDG_Refresh(&hiwdg);
 		CAN1_ready=1;
 	}
@@ -161,67 +110,37 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 	{
 		switch(rx_header.StdId)
 		{
-//			case 0x201:
-//			{
-//					fric[0].tempdata.temp_angle[1] = (rx_data[0]<<8)|(rx_data[1]);
-//					fric[0].tempdata.temp_angle[1] =fric[0].tempdata.temp_angle[1]*360.0f/0x1fff-180.f;
-//					gearmotor_angledecoder(&fric[0]);
-//					fric[0].tempdata.speed = ((rx_data[2]<<8)|(rx_data[3]));
-//					fric[0].tempdata.current = (rx_data[4]<<8)|(rx_data[5]);
-//					
-//					fric[0].curmotorctrlinfo.speed = fric[0].tempdata.speed;
-//					fric[0].curmotorctrlinfo.speed = fric[0].curmotorctrlinfo.speed/fric[0].parameter.reductiongearratio;
-//					fric[0].curmotorctrlinfo.current = fric[0].tempdata.current;
-//					fric[0].curmotorctrlinfo.current =fric[0].curmotorctrlinfo.current/10000*fric[0].parameter.current_limit[1];
-//			}break;
-//			
-//			case 0x202:
-//			{
-//					fric[1].tempdata.temp_angle[1] = (rx_data[0]<<8)|(rx_data[1]);
-//					fric[1].tempdata.temp_angle[1] =fric[1].tempdata.temp_angle[1]*360.0f/0x1fff-180.f;
-//					gearmotor_angledecoder(&fric[1]);
-//					fric[1].tempdata.speed = ((rx_data[2]<<8)|(rx_data[3]));
-//					fric[1].tempdata.current = (rx_data[4]<<8)|(rx_data[5]);
-//					
-//					fric[1].curmotorctrlinfo.speed = fric[1].tempdata.speed;
-//					fric[1].curmotorctrlinfo.speed = fric[1].curmotorctrlinfo.speed/fric[1].parameter.reductiongearratio;
-////					fric[1].curmotorctrlinfo.current = fric[1].tempdata.current;
-////					fric[1].curmotorctrlinfo.current =fric[1].curmotorctrlinfo.current/10000*fric[1].parameter.current_limit[1];
-//			}break;
-//			
-//			
-//			case 0x203:
-//			{
-//					trig.tempdata.temp_angle[1] = (rx_data[0]<<8)|(rx_data[1]);
-//					trig.tempdata.temp_angle[1] =trig.tempdata.temp_angle[1]*360.0f/0x1fff-180.f;
-//					gearmotor_angledecoder(&trig);
-//					trig.tempdata.speed = ((rx_data[2]<<8)|(rx_data[3]));
-//					trig.tempdata.current = (rx_data[4]<<8)|(rx_data[5]);
-//					
-//					trig.curmotorctrlinfo.speed = trig.tempdata.speed;
-//					trig.curmotorctrlinfo.speed = trig.curmotorctrlinfo.speed/trig.parameter.reductiongearratio;
-////					trig.curmotorctrlinfo.current = trig.tempdata.current;
-////					trig.curmotorctrlinfo.current =trig.curmotorctrlinfo.current/10000*trig.parameter.current_limit[1];
-//			}break;
-//			
-//			case 0x205:
-//			{
-////					pit.tempdata.temp_angle[1] = (rx_data[0]<<8)|(rx_data[1]);
-////					pit.tempdata.temp_angle[1] =pit.tempdata.temp_angle[1]*360.0f/0x1fff-180.f;
-////					gearmotor_angledecoder(&pit);
-////					pit.tempdata.speed = ((rx_data[2]<<8)|(rx_data[3]));
-////					pit.tempdata.current = (rx_data[4]<<8)|(rx_data[5]);
-////					
-////					pit.curmotorctrlinfo.speed = pit.tempdata.speed;
-////					pit.curmotorctrlinfo.speed = pit.curmotorctrlinfo.speed/pit.parameter.reductiongearratio;
-//////					pit.curmotorctrlinfo.current = pit.tempdata.current;
-//////					pit.curmotorctrlinfo.current =pit.curmotorctrlinfo.current/10000*pit.parameter.current_limit[1];
-//				
-//					pit.tempdata.temp_angle[1] = (rx_data[0]<<8)|(rx_data[1]);
-//					pit.curmotorctrlinfo.angle =pit.tempdata.temp_angle[1]*360.0f/0x1fff-180.f;
-//					pit.curmotorctrlinfo.speed = ((rx_data[2]<<8)|(rx_data[3]));
-//					pit.tempdata.current = (rx_data[4]<<8)|(rx_data[5]);
-//			}break;
+			
+			case 0x201:
+			{
+					canrxtomotinfo(&fricinfo[0],rx_data);
+			}break;
+			
+			case 0x202:
+			{
+					canrxtomotinfo(&fricinfo[1],rx_data);
+			}break;
+			
+			#ifdef infa
+			case 0x203:
+			{
+					canrxtomotinfo(&magainfo,rx_data);
+			}break;
+			#endif
+			
+			case 0x181:
+			{
+				mpu_acc_reci(rx_data,&mpudata);
+			}break;
+			case 0x281:
+			{
+				mpu_spe_reci(rx_data,&mpudata);
+			}break;
+			case 0x481:
+			{
+				mpu_Quat_reci(rx_data,&mpudata);
+				mpu_angle_calc(&mpudata);
+			}break;
 		}
 //		CAN2_ready=1;
 	}
