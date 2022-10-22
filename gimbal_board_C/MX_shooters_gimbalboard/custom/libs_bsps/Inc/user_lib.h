@@ -2,7 +2,7 @@
 #define USER_LIB_H
 #include "struct_typedef.h"
 
-typedef __packed struct
+typedef struct /*__packed*/ ramp_function_source_t
 {
     fp32 input;        //输入数据
     fp32 out;          //输出数据
@@ -11,7 +11,7 @@ typedef __packed struct
     fp32 frame_period; //时间间隔
 } ramp_function_source_t;
 
-typedef __packed struct
+typedef struct /*__packed*/ first_order_filter_type
 {
     fp32 input;        //输入数据
     fp32 out;          //滤波输出的数据

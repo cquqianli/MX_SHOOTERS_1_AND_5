@@ -1,5 +1,5 @@
-#include "bsp_imu_pwm.h"
 #include "main.h"
+#include "bsp_imu_pwm.h"
 
 extern TIM_HandleTypeDef htim10;
 void imu_pwm_set(uint16_t pwm)

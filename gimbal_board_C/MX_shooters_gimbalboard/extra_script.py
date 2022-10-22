@@ -15,7 +15,10 @@ env.Append(
         "-DARM_MATH_CM4",
         "-D__GIT_COMMIT_ID__=\\\"{}\\\"".format(os.popen("git rev-parse HEAD").read().split()[0]),
         "-mfpu=fpv4-sp-d16",
-	    "-mfloat-abi=hard"
+	    "-mfloat-abi=hard",
+        "-IInc/tasks",
+        "-IInc/lib_bsps",
+        "-IInc/devices"
     ],
     CFLAGS=[
         "-std=c11"

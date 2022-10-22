@@ -1,6 +1,8 @@
 #ifndef BSP_LED_H
 #define BSP_LED_H
 #include "struct_typedef.h"
+#include <stm32f4xx_hal.h>
+#include <stm32f4xx_hal_tim.h>
 
 /**
   * @brief          aRGB show
