@@ -64,12 +64,13 @@ void CAN_send(uint32_t address,\
     CAN_tx_message[5] = message[2];
     CAN_tx_message[6] = message[3] >> 8;
     CAN_tx_message[7] = message[3];
+		
 		HAL_CAN_AddTxMessage(&hcanx, &CAN_tx, CAN_tx_message, &send_mail_box);
-
+		//while(HAL_CAN_IsTxMessagePending(&hcanx,send_mail_box));
 }
 
 
-
+int16_t tm[4];
 /*-------------------------------------
 * 函数名：CAN接收
 * 描述  ：接收中断，先判断是can1/2的数据，根据地址接收，然后解算成代码内使用的单位
@@ -89,17 +90,39 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 	{
 		switch(rx_header.StdId)
 		{
-			case 0x205:
+			
+			
+			#ifdef infa
+			case 0x203:
+			{
+				canrxtomotinfo(&triginfo,rx_data);
+			}break;
+			
+			#endif
+			
+			#ifdef hero
+			case trigid:
+			{
+				canrxtomotinfo(&triginfo,rx_data);
+			}break;
+			
+			case yawid:
 			{
 				canrxtomotinfo(&yawinfo,rx_data);
 			}break;
-			case 0x206:
+			
+			#endif
+			
+			case 0x234:
 			{
-				canrxtomotinfo(&pitinfo,rx_data);
+				robocurinfo.zrelangle=((int16_t)(rx_data[0]<<8|rx_data[1]))/100.f;
 			}break;
-			case 0x201:
+			
+			case 0x200:
 			{
-				canrxtomotinfo(&triginfo,rx_data);
+				tm[0]=rx_data[0]<<8|rx_data[1];
+				tm[1]=rx_data[2]<<8|rx_data[3];
+				tm[2]=rx_data[4]<<8|rx_data[5];
 			}break;
 			
 		}
@@ -111,12 +134,12 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 		switch(rx_header.StdId)
 		{
 			
-			case 0x201:
+			case fric0id:
 			{
 					canrxtomotinfo(&fricinfo[0],rx_data);
 			}break;
 			
-			case 0x202:
+			case firc1id:
 			{
 					canrxtomotinfo(&fricinfo[1],rx_data);
 			}break;
@@ -126,22 +149,46 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 			{
 					canrxtomotinfo(&magainfo,rx_data);
 			}break;
+			
+			case 0x206:
+			{
+				canrxtomotinfo(&pitinfo,rx_data);
+			}break;
+			
 			#endif
 			
-			case 0x181:
+			#ifdef hero
+			case pitid:
+			{
+				canrxtomotinfo(&pitinfo,rx_data);
+			}break;
+			#endif
+			
+			case 0x188:
 			{
 				mpu_acc_reci(rx_data,&mpudata);
 			}break;
-			case 0x281:
+			case 0x288:
 			{
 				mpu_spe_reci(rx_data,&mpudata);
 			}break;
-			case 0x481:
+			case 0x388:
 			{
-				mpu_Quat_reci(rx_data,&mpudata);
-				mpu_angle_calc(&mpudata);
+				mpu_ang_reci(rx_data,&mpudata);
+				//mpu_Quat_reci(rx_data,&mpudata);
+				//mpu_angle_calc(&mpudata);
 			}break;
+			
+			case 0x123:
+			{
+				//curmestochas_unpack(&chasinfo,rx_data);
+			}break;
+			case 0x321:
+			{
+				//ctrlmestochas_unpack(&chasinfo,rx_data);
+			}break;
+
 		}
-//		CAN2_ready=1;
+	CAN2_ready=1;
 	}
 }

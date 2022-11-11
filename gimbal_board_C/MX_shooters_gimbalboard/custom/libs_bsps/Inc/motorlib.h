@@ -21,13 +21,15 @@ typedef struct _Motor_Info
 	struct
 	{
 		
-		float angle_limit[2];//½Ç¶ÈÏŞÖÆ£¬ÎŞÏŞÖÆÔòÎª{-180£¬180}£¬´úÂëÄÚÊ¹ÓÃµ¥Î»¶È
-		float speed_limit[2];//ËÙ¶ÈÏŞÖÆ£¬²éÑ¯µç»úµçµ÷Ì××°ÊÖ²á£¬´úÂëÄÚÊ¹ÓÃµ¥Î»rpm
-		float current_limit[2];//µçÁ÷ÏŞÖÆ£¬²éÑ¯µç»úµçµ÷Ì××°ÊÖ²á£¬´úÂëÄÚÊ¹ÓÃµ¥Î»A
-		float reductiongearratio;//µç»ú¼°ÆäËùÔÚ»ú¹¹¹¹³ÉµÄ¼õËÙ±¶ÂÊ£¬¼õËÙÊ±´úÂëÄÚ´ËÖµÓ¦´óÓÚÒ»
-		float inpositioncurrent;//×²ÏŞÎ»µÄµçÁ÷Öµ£¬Ê¹ÓÃµ¥Î»A
-		float installationangle;//°²×°½Ç¶È£¬¼´µç»ú¹éÁãÊ±µÄ½Ç¶È£¬Õë¶ÔÔöÁ¿Ê½±àÂëÆ÷£¨3508/2006£©ºÍ¾ø¶ÔÖµ±àÂëÆ÷£¨6020£©ÓĞ²»Í¬µÄÊ¹ÓÃ·½·¨
+		float angle_limit[2];//è§’åº¦é™åˆ¶ï¼Œæ— é™åˆ¶åˆ™ä¸º{-180ï¼Œ180}ï¼Œä»£ç å†…ä½¿ç”¨å•ä½åº¦
+		float speed_limit;//é€Ÿåº¦é™åˆ¶ï¼ŒæŸ¥è¯¢ç”µæœºç”µè°ƒå¥—è£…æ‰‹å†Œï¼Œä»£ç å†…ä½¿ç”¨å•ä½rpm
+		float current_limit[2];//ç”µæµé™åˆ¶ï¼ŒæŸ¥è¯¢ç”µæœºç”µè°ƒå¥—è£…æ‰‹å†Œï¼Œä»£ç å†…ä½¿ç”¨å•ä½A
+		float reductiongearratio;//ç”µæœºåŠå…¶æ‰€åœ¨æœºæ„æ„æˆçš„å‡é€Ÿå€ç‡ï¼Œå‡é€Ÿæ—¶ä»£ç å†…æ­¤å€¼åº”å¤§äºä¸€
+		float inpositioncurrent;//æ’é™ä½çš„ç”µæµå€¼ï¼Œä½¿ç”¨å•ä½A
+		float installationangle;//å®‰è£…è§’åº¦ï¼Œå³ç”µæœºå½’é›¶æ—¶çš„è§’åº¦ï¼Œé’ˆå¯¹å¢é‡å¼ç¼–ç å™¨ï¼ˆ3508/2006ï¼‰å’Œç»å¯¹å€¼ç¼–ç å™¨ï¼ˆ6020ï¼‰æœ‰ä¸åŒçš„ä½¿ç”¨æ–¹æ³•
 		int16_t pidoutcycrate;
+		uint8_t sumangle;//0x1ç´¯è®¡è§’åº¦
+		uint8_t reversed;//0x1åè£…
 	}parameter;
 	
 	struct
@@ -39,21 +41,21 @@ typedef struct _Motor_Info
 		float anglechanged;
 		float temp_angle[2];
 
-	}tempdata;//ÓÃÓÚ½âËã½Ç¶ÈµÄÁÙÊ±²ÎÊı
+	}tempdata;//ç”¨äºè§£ç®—è§’åº¦çš„ä¸´æ—¶å‚æ•°
 	
 	struct
 	{
 		float angle;
 		float speed;
-		float current;//2006Ö±½Ó·´À¡×ª¾Ø³£ÏµÊıÎªÒ»£¬3508·´À¡×ª¾ØµçÁ÷
-	}tarmotorinfo;//¼ÇÂ¼µç»úÄ¿±ê²ÎÊı
+		float current;//2006ç›´æ¥åé¦ˆè½¬çŸ©å¸¸ç³»æ•°ä¸ºä¸€ï¼Œ3508åé¦ˆè½¬çŸ©ç”µæµ
+	}tarmotorinfo;//è®°å½•ç”µæœºç›®æ ‡å‚æ•°
 	
 	struct
 	{
 		float angle;
 		float speed;
 		float current[5];
-	}curmotorinfo;//¼ÇÂ¼µç»úÄ¿±ê½Ç¶È
+	}curmotorinfo;//è®°å½•ç”µæœºç›®æ ‡è§’åº¦
 	
 }MotorInfo;
 
@@ -73,50 +75,5 @@ void canrxtomotinfo(MotorInfo *minfo,uint8_t rx[8]);
 float anglecircle(float angle);
 float anglelimit(float angle,float anglemax,float anglemin);
 
-#define Defaul_3508_Parameter \
-{\
-		{-180.f,180.f},\
-		{-450.f,450.f},\
-		{-10.f,10.f},\
-		0,\
-		19.2,\
-		0,\
-		0,\
-}\
-
-
-
-#define Defaul_TempData \
-{\
-		0,\
-		0,\
-		0,\
-		0,\
-		0,\
-		{0,0},\
-		0,\
-}\
-
-#define Defaul_TarMotorCtrlInfo \
-{\
-		0,\
-		0,\
-		0,\
-}\
-
-#define Defaul_CurMotorCtrlInfo \
-{\
-		0,\
-		0,\
-		0,\
-}\
-
-#define Default_2006_Config \
-{\
-	Defaul_2006_Parameter,\
-	Defaul_TempData,\
-	Defaul_TarMotorCtrlInfo,\
-	Defaul_CurMotorCtrlInfo,\
-}\
 
 #endif

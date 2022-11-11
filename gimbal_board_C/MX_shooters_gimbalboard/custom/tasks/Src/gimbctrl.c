@@ -1,7 +1,8 @@
 #include "main.h"
 
-MotorInfo pitinfo,yawinfo;
-PID_regulator pitanglepid,pitspeedpid,yawanglepid,yawspeedpid;
+MotorInfo pitinfo=pitinfo_default_config,yawinfo=yawinfo_default_config;
+PID_regulator pitanglepid=pit_angle_pid,pitspeedpid=pit_speed_pid,	\
+													yawanglepid=yaw_angle_pid,yawspeedpid=yaw_speed_pid;
 
 
 
@@ -68,11 +69,35 @@ void gimbmotpid_calc(MotorInfo *pit, \
 
 void gimbctrl(void)
 {
+	pitanglepid.kp=5;
+	pitanglepid.ki=0;
+	pitanglepid.kd=0;
+	pitspeedpid.kp=80;
+	pitspeedpid.ki=0.005;
+	pitspeedpid.kd=5;
+	
+	yawanglepid.kp=15;
+	yawanglepid.ki=0;
+	yawanglepid.kd=3;
+	yawspeedpid.kp=200;
+	yawspeedpid.ki=0.08;
+	yawspeedpid.kd=5;
 	for(;;)
 	{
 		gimbmotinfo_compl(&pitinfo,&yawinfo,&roboctrlinfo);
 		gimbmotpid_calc(&pitinfo,&yawinfo,&mpudata,&pitanglepid,&pitspeedpid,&yawanglepid,&yawspeedpid);
-		osDelay(2);
+		
+		if(roboctrlinfo.gimb.status!=0xFF)
+		{	
+			mestocan1_0x1ff_pack(mestocan1_0x1ff);
+			
+		}
+		else
+	  {
+			zero_pack(mestocan1_0x1ff);
+		}
+		CAN_send(0x1ff,hcan1,mestocan1_0x1ff);
+		osDelayUntil(taskperi);
 	}
 		
 }
