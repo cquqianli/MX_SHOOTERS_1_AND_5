@@ -1,4 +1,6 @@
 #include "main.h"
+#include "devices/mpu.h"
+#include "devices/rc.h"
 
 int RC_READY=0;//外设就绪标志位
 RC_DATA RC_Data;//需要的数据

@@ -21,7 +21,7 @@
 //#include "bsp_usart.h"
 //#include "detect_task.h"
 
-#include "CRC8_CRC16.h"
+#include "lib_bsps/crc8_crc16.h"
 #include "fifo.h"
 #include "protocol.h"
 #include "ref.h"

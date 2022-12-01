@@ -1,4 +1,5 @@
 #include "main.h"
+#include "mpu.h"
 
 MPU_Data mpudata;
 MPU_Data mpulastdata;
