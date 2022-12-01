@@ -1,0 +1,12 @@
+.DS_Store
+.pio
+
+# keil project files
+DebugConfig/
+*.uvguix*
+*.bak
+*.d
+*.o
+*.crf
+*.log
+*.lock

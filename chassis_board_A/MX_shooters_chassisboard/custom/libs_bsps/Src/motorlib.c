@@ -100,34 +100,34 @@ void gearmotor_angledecoder_sum(MotorInfo *Motor)
 
 }
 
-/*-------------------------------------
-* 函数名：线性斜坡加速整形
-* 描述  ：用来对控制轮子和其他奇奇怪怪的东西输入输出整形防止打滑的
-* 输入  ：数据结构体
-* 输出  ：无
+///*-------------------------------------
+//* 函数名：线性斜坡加速整形
+//* 描述  ：用来对控制轮子和其他奇奇怪怪的东西输入输出整形防止打滑的
+//* 输入  ：数据结构体
+//* 输出  ：无
 
-作者：LPGUAIA
-日期：2021.4.27
------------------------------------------*/ 
-void k_shaper(kshaper_handle *kdata)
-{
-	if(ABS((kdata->data-kdata->lastdata)/kdata->sampleperi)<=kdata->k)
-	{
-		kdata->outdata=kdata->data;
-		kdata->lastdata=kdata->data;
-	}
-	else if ((kdata->data-kdata->lastdata)/kdata->sampleperi<-kdata->k)
-	{
-		kdata->outdata=kdata->lastdata-kdata->k*kdata->sampleperi;
-		kdata->lastdata=kdata->outdata;
-	}
-	else if ((kdata->data-kdata->lastdata)/kdata->sampleperi>kdata->k)
-	{
-		kdata->outdata=kdata->lastdata+kdata->k*kdata->sampleperi;
-		kdata->lastdata=kdata->data;
-	}
-	
-}
+//作者：LPGUAIA
+//日期：2021.4.27
+//-----------------------------------------*/ 
+//void k_shaper(kshaper_handle *kdata)
+//{
+//	if(ABS((kdata->data-kdata->lastdata)/kdata->sampleperi)<=kdata->k)
+//	{
+//		kdata->outdata=kdata->data;
+//		kdata->lastdata=kdata->data;
+//	}
+//	else if ((kdata->data-kdata->lastdata)/kdata->sampleperi<-kdata->k)
+//	{
+//		kdata->outdata=kdata->lastdata-kdata->k*kdata->sampleperi;
+//		kdata->lastdata=kdata->outdata;
+//	}
+//	else if ((kdata->data-kdata->lastdata)/kdata->sampleperi>kdata->k)
+//	{
+//		kdata->outdata=kdata->lastdata+kdata->k*kdata->sampleperi;
+//		kdata->lastdata=kdata->data;
+//	}
+//	
+//}
 
 void motaspid_calc(MotorInfo *minfo,PID_regulator *anglepid,PID_regulator *speedpid)
 {
@@ -143,8 +143,8 @@ void motaspid_calc(MotorInfo *minfo,PID_regulator *anglepid,PID_regulator *speed
 		
 		anglepid->tar=minfo->tarmotorinfo.angle;
 		anglepid->cur=minfo->curmotorinfo.angle;
-		anglepid->outputMax=minfo->tarmotorinfo.speed;
-		PID_calc(anglepid,1);
+		//anglepid->outputMax=minfo->tarmotorinfo.speed;
+		PID_angle_calc(anglepid,1,300);
 		minfo->tempdata.pidcount=0;
 	}
 		
@@ -172,19 +172,43 @@ void motcurrentsensor(MotorInfo *minfo)
 
 void canrxtomotinfo(MotorInfo *minfo,uint8_t rx[8])
 {
-	minfo->tempdata.temp_angle[1] = (rx[0]<<8)|(rx[1]);
-	minfo->curmotorinfo.angle =yawinfo.tempdata.temp_angle[1]*360.0f/0x1fff-180.f;
-	minfo->curmotorinfo.speed = ((int16_t)((rx[2]<<8)|(rx[3])))/yawinfo.parameter.reductiongearratio;
-	motcurrentsensor(minfo);
-	minfo->curmotorinfo.current[0] = (int16_t)((rx[4]<<8)|(rx[5]));
+	
+	if(minfo->parameter.reversed)
+	{
+		minfo->tempdata.temp_angle[1] = ((int16_t)-((rx[0]<<8)|(rx[1])))*360.0f/0x1fff-180.f;
+		if(minfo->parameter.sumangle)
+			gearmotor_angledecoder_sum(minfo);
+		else
+			gearmotor_angledecoder(minfo);
+		minfo->curmotorinfo.speed = ((int16_t)(-((rx[2]<<8)|(rx[3]))))/minfo->parameter.reductiongearratio;
+		motcurrentsensor(minfo);
+		minfo->curmotorinfo.current[0] = ((int16_t)-(((rx[4]<<8)|(rx[5]))))/(minfo->parameter.current_limit[0])*minfo->parameter.current_limit[1];
+	
+	}
+	else
+	{
+		minfo->tempdata.temp_angle[1] = ((int16_t)((rx[0]<<8)|(rx[1])))*360.0f/0x1fff-180.f;
+		if(minfo->parameter.sumangle)
+			gearmotor_angledecoder_sum(minfo);
+		else
+			gearmotor_angledecoder(minfo);
+		minfo->curmotorinfo.speed = ((int16_t)((rx[2]<<8)|(rx[3])))/minfo->parameter.reductiongearratio;
+		motcurrentsensor(minfo);
+		minfo->curmotorinfo.current[0] = ((int16_t)((rx[4]<<8)|(rx[5])))/(minfo->parameter.current_limit[0])*minfo->parameter.current_limit[1];
+	
+	}
 }
 
 float anglecircle(float angle)
 {
-	if(angle>180.f)
+	while(angle>180.f)
+	{
 		angle=angle-360.f;
-	else if(angle<-180.f)
+	}
+	while(angle<-180.f)
+	{
 		angle=angle+360.f;
+	}
 
 	return angle;
 }
@@ -198,3 +222,4 @@ float anglelimit(float angle,float anglemax,float anglemin)
 
 	return angle;
 }
+

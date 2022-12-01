@@ -66,6 +66,8 @@ void CAN_send(uint32_t address,\
     CAN_tx_message[7] = message[3];
 		HAL_CAN_AddTxMessage(&hcanx, &CAN_tx, CAN_tx_message, &send_mail_box);
 
+		//while(HAL_CAN_IsTxMessagePending(&hcanx,send_mail_box));
+	
 }
 
 
@@ -91,15 +93,21 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 		{
 			case 0x123:
 			{
-				curmestochas_unpack(&chasinfo,rx_data);
+				GIMB_READY=1;
+				chaslastinfo.tar=	chasinfo.tar;
+				ctrlmestochas_unpack(&chasinfo,&chaslastinfo,rx_data);
 			}break;
 			case 0x321:
 			{
-				ctrlmestochas_unpack(&chasinfo,rx_data);
+				curmestochas_unpack(&chasinfo,rx_data);
 			}break;
-			case 0x205:
+			case yawid:
 			{
 				canrxtomotinfo(&yawinfo,rx_data);
+			}break;
+			case 0x211:
+			{
+				capsinfo_unpack(&capsinfo,rx_data);
 			}break;
 			
 		}
@@ -128,10 +136,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 			{
 				canrxtomotinfo(&wheelinfo[3],rx_data);
 			}break;
-			case 0x211:
-			{
-				capsinfo_unpack(&capsinfo,rx_data);
-			}break;
+			
 //			#ifdef infa
 //			case 0x203:
 //			{
@@ -178,6 +183,6 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 //				mpu_angle_calc(&mpudata);
 //			}break;
 		}
-//		CAN2_ready=1;
+		CAN2_ready=1;
 	}
 }

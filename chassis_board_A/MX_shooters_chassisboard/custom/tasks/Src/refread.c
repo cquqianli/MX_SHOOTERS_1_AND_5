@@ -219,7 +219,7 @@ void refread(void const * argument)
     {
 
         referee_unpack_fifo_data();
-        osDelay(10);
+        osDelayUntil(10);
     }
 }
 

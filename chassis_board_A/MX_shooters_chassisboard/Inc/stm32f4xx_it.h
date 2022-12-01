@@ -59,6 +59,7 @@ void DMA1_Stream3_IRQHandler(void);
 void CAN1_TX_IRQHandler(void);
 void CAN1_RX0_IRQHandler(void);
 void USART1_IRQHandler(void);
+void USART3_IRQHandler(void);
 void EXTI15_10_IRQHandler(void);
 void DMA2_Stream2_IRQHandler(void);
 void CAN2_TX_IRQHandler(void);

@@ -22,12 +22,14 @@ typedef struct _Motor_Info
 	{
 		
 		float angle_limit[2];//角度限制，无限制则为{-180，180}，代码内使用单位度
-		float speed_limit[2];//速度限制，查询电机电调套装手册，代码内使用单位rpm
+		float speed_limit;//速度限制，查询电机电调套装手册，代码内使用单位rpm
 		float current_limit[2];//电流限制，查询电机电调套装手册，代码内使用单位A
 		float reductiongearratio;//电机及其所在机构构成的减速倍率，减速时代码内此值应大于一
 		float inpositioncurrent;//撞限位的电流值，使用单位A
 		float installationangle;//安装角度，即电机归零时的角度，针对增量式编码器（3508/2006）和绝对值编码器（6020）有不同的使用方法
 		int16_t pidoutcycrate;
+		uint8_t sumangle;//0x1累计角度
+		uint8_t reversed;//0x1反装
 	}parameter;
 	
 	struct
@@ -65,68 +67,13 @@ typedef struct _wave_HandleTypeDef
 	float amplitude;
 }wave_HandleTypeDef;
 
-typedef struct
-{
-	float data;   									//输入数据
-	float lastdata;   									//记录上次数据
-	float k;								//期望k（/ms）
-	float sampleperi;//ms
-	float outdata;
-}kshaper_handle;
-
 void gearmotor_angledecoder(MotorInfo *Motor);
 void gearmotor_angledecoder_sum(MotorInfo *Motor);
 void motaspid_calc(MotorInfo *minfo,PID_regulator *anglepid,PID_regulator *speedpid);
-void canrxtomotinfo(MotorInfo *minfo,uint8_t rx[8]);
 void motcurrentsensor(MotorInfo *minfo);
-void k_shaper(kshaper_handle *kdata);
+void canrxtomotinfo(MotorInfo *minfo,uint8_t rx[8]);
 float anglecircle(float angle);
 float anglelimit(float angle,float anglemax,float anglemin);
 
-#define Defaul_3508_Parameter \
-{\
-		{-180.f,180.f},\
-		{-450.f,450.f},\
-		{-10.f,10.f},\
-		0,\
-		19.2,\
-		0,\
-		0,\
-}\
-
-
-
-#define Defaul_TempData \
-{\
-		0,\
-		0,\
-		0,\
-		0,\
-		0,\
-		{0,0},\
-		0,\
-}\
-
-#define Defaul_TarMotorCtrlInfo \
-{\
-		0,\
-		0,\
-		0,\
-}\
-
-#define Defaul_CurMotorCtrlInfo \
-{\
-		0,\
-		0,\
-		0,\
-}\
-
-#define Default_2006_Config \
-{\
-	Defaul_2006_Parameter,\
-	Defaul_TempData,\
-	Defaul_TarMotorCtrlInfo,\
-	Defaul_CurMotorCtrlInfo,\
-}\
 
 #endif

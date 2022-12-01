@@ -43,9 +43,12 @@ extern "C" {
 #include "infoproc.h"
 #include "usart.h"
 #include "ref.h"
+#include "refread.h"
 #include "scaps.h"
 #include "cmsis_os.h"
 #include "UI.h"
+#include "init.h"
+#include "stm32f4xx_hal_gpio.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

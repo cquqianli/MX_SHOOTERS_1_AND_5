@@ -32,4 +32,5 @@
   * @retval         none
   */
 //extern void referee_usart_task(void const * argument);
+extern void USART3_inIRQHandler(void);
 #endif

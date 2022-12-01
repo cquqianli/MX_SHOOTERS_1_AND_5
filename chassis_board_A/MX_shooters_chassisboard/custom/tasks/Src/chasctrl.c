@@ -1,10 +1,10 @@
 #include "main.h"
 
-ChasInfo chasinfo,chaslastinfo;
-MotorInfo wheelinfo[4],yawinfo;
-PID_regulator wheelspeedpid[4],spinpid;
+ChasInfo chasinfo=chasis_default_config,chaslastinfo=chasis_default_config;
+MotorInfo wheelinfo[4]={wheel_default_config,wheel_default_config,wheel_default_config,wheel_default_config},yawinfo=yawinfo_default_config;
+PID_regulator wheelspeedpid[4]={wheel_default_pid,wheel_default_pid,wheel_default_pid,wheel_default_pid},spinpid=spin_default_pid;
 float yawzeroangle[2];
-kshaper_handle xyspeed[2];
+//kshaper_handle xyspeed[2];
 
 /* 
 			//=======\\				   //=======\\
@@ -30,45 +30,50 @@ kshaper_handle xyspeed[2];
 ÈÕÆÚ£º2021.7.11
 */
 
-void yawzero_clac(MotorInfo *yinfo,ChasInfo *ch,float yza[2])
+
+void yawzero_clac(MotorInfo *yinfo,ChasInfo *ch,float yza[2],uint16_t GPIO_Pin)
 {
-	if(HAL_GPIO_ReadPin(GPIOD,GPIO_PIN_12)==GPIO_PIN_SET)
+	if(HAL_GPIO_ReadPin(GPIOD,GPIO_Pin)==GPIO_PIN_SET)
 	{
 		yza[0]=yinfo->curmotorinfo.angle;
 		yza[1]=0;
 	}
-	else if(HAL_GPIO_ReadPin(GPIOD,GPIO_PIN_12)==GPIO_PIN_RESET)
+	else if(HAL_GPIO_ReadPin(GPIOD,GPIO_Pin)==GPIO_PIN_RESET)
 	{
 		yza[1]=yinfo->curmotorinfo.angle;
-		yinfo->parameter.installationangle=(yza[1]+yza[0])/2;
-		ch->cur.zrelangle=yinfo->curmotorinfo.angle-yinfo->parameter.installationangle;
+		yinfo->parameter.installationangle=(yza[1]+yza[0])/2.f;
+		//ch->cur.zrelangle=yinfo->curmotorinfo.angle-yinfo->parameter.installationangle;
 		yza[0]=0;
 	}
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	yawzero_clac(&yawinfo,&chasinfo,yawzeroangle,GPIO_Pin);
 }
 
 void zangletozspeed_calc(ChasInfo *ch,PID_regulator *sppid)
 {
 	
-	sppid->tar=ch->tar.zrelangle;
-	sppid->cur=ch->cur.zrelangle;
-	sppid->outputMax=rotspeedSV+rotspeedPPV;
-	PID_angle_calc(sppid,1,180);
-	ch->tar.zspeed=sppid->output;
+//	sppid->tar=ch->tar.zrelangle;
+//	sppid->cur=ch->cur.zrelangle;
+//	sppid->outputMax=rotspeedSV+rotspeedPPV;
+//	PID_angle_calc(sppid,1,180);
+	ch->tar.zspeed=-ch->tar.zrelangle;
 }
 
 void xyztowheelspeed_calc(ChasInfo *ch,MotorInfo whinfo[4])
 {
 	
-	float tempxy[2]={ch->tar.xspeed,ch->tar.yspeed};
-	float anglematrix[2][2]={{cos(ch->cur.zrelangle/360.f*2.f*PI),-sin(ch->cur.zrelangle/360.f*2.f*PI)}, \
-													 {sin(ch->cur.zrelangle/360.f*2.f*PI),cos(ch->cur.zrelangle/360.f*2.f*PI)}};
-	
-	ch->tar.xspeed=tempxy[0]*anglematrix[0][0]+tempxy[1]*anglematrix[0][1];
-	ch->tar.xspeed=tempxy[0]*anglematrix[1][0]+tempxy[1]*anglematrix[1][1];
+
 	whinfo[0].tarmotorinfo.speed = - ch->tar.xspeed - ch->tar.yspeed + ch->tar.zspeed;
 	whinfo[1].tarmotorinfo.speed = - ch->tar.xspeed + ch->tar.yspeed + ch->tar.zspeed;
 	whinfo[2].tarmotorinfo.speed = ch->tar.xspeed + ch->tar.yspeed + ch->tar.zspeed;
 	whinfo[3] .tarmotorinfo.speed= ch->tar.xspeed - ch->tar.yspeed + ch->tar.zspeed;
+//		whinfo[0].tarmotorinfo.speed = - ch->tar.xspeed - ch->tar.yspeed ;
+//		whinfo[1].tarmotorinfo.speed = - ch->tar.xspeed + ch->tar.yspeed ;
+//		whinfo[2].tarmotorinfo.speed = ch->tar.xspeed + ch->tar.yspeed ;
+//		whinfo[3] .tarmotorinfo.speed= ch->tar.xspeed - ch->tar.yspeed ;
 }
 
 void wheelspeedpid_calc(MotorInfo whinfo[4],PID_regulator wspid[4] )
@@ -110,12 +115,21 @@ void powerlimit(MotorInfo whinfo[4],ChasInfo *ch,CapsInfo *caps,PID_regulator ws
 
 void chasctrl()
 {
+	for(int8_t i=0;i<4;i++)
+	{
+		wheelspeedpid[i].kp=40;
+		wheelspeedpid[i].ki=0.000;
+		wheelspeedpid[i].kd=1;
+	}
+	spinpid.kp=5;
+	
+	spinpid.kd=0;
 	for(;;)
 	{
 		zangletozspeed_calc(&chasinfo,&spinpid);
 		xyztowheelspeed_calc(&chasinfo,wheelinfo);
 		wheelspeedpid_calc(wheelinfo,wheelspeedpid);
 		powerlimit(wheelinfo,&chasinfo,&capsinfo,wheelspeedpid);
-		osDelay(2);
+		osDelayUntil(taskperi);
 	}
 }

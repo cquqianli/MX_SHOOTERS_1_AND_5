@@ -33,13 +33,15 @@ typedef struct _Chas_Info
 		float power; 
 		float powerlimit;
 		float powerbuffer;
+		float level;
 	}cur;
 	
 }ChasInfo;
 
 extern float yawzeroangle[2];
-extern ChasInfo chasinfo;
+extern ChasInfo chasinfo,chaslastinfo;
 extern MotorInfo wheelinfo[4],yawinfo;
-void yawzero_clac(MotorInfo *yinfo,ChasInfo *ch,float yza[2]);
+extern PID_regulator wheelspeedpid[4];
+void yawzero_clac(MotorInfo *yinfo,ChasInfo *ch,float yza[2],uint16_t GPIO_Pin);
 
 #endif 

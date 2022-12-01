@@ -174,7 +174,26 @@ void get_chassis_power_and_buffer(fp32 *power, fp32 *buffer,fp32 *powerlimit)
 	
    *power = power_heat_data_t.chassis_power;
    *buffer = power_heat_data_t.chassis_power_buffer;
-	 *powerlimit = robot_state.chassis_power_limit;
+	switch(robot_state.robot_level)
+	{
+		case 0:
+		{
+			 *powerlimit = robot_power_limit_0;
+		}break;
+		case 1:
+		{
+			 *powerlimit = robot_power_limit_1;
+		}break;
+		case 2:
+		{
+			 *powerlimit = robot_power_limit_2;
+		}break;
+		case 3:
+		{
+			 *powerlimit = robot_power_limit_3;
+		}break;
+	}
+
 }
 
 
