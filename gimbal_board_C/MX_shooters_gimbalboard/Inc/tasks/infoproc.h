@@ -12,14 +12,14 @@ typedef struct _Robo_Info
 	{
 		uint8_t status; //0x00:off 0x01:loading 0x10:ready 
 		uint8_t maglid;//0x00:opened 0x01:opening 0x10:closed 0x11:closing 
-	}weap;//
+	} weap;//云台发射端
 	
 	struct
 	{
 		uint8_t status; //0x00:manual 0x01:auto
 		float pitangle;
 		float yawangle;
-	}gimb;//
+	}gimb;//云台的角度
 	
 	struct
 	{
@@ -31,16 +31,16 @@ typedef struct _Robo_Info
 		float yspeed;
 		float zrelangle;
 
-	}chas;//
+	}chas;//底盘的x速度，y速度，z轴角速度（应该，有待确认）
 	
-}RoboCtrlInfo;
+} RoboCtrlInfo;//全局变量，其他地方都可以读取
 
 typedef struct _Robo_cur_Info
 {
 	float xspeed;
 	float yspeed;
 	float zrelangle;
-}RoboCurInfo;
+}RoboCurInfo; //这个不是和robo_info里面的chas 一样吗，还少了一个status
 
 extern RoboCtrlInfo roboctrlinfo;
 extern RoboCurInfo robocurinfo;

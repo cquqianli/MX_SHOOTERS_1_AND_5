@@ -13,8 +13,6 @@ void rc_rbctrl_status_compl(RC_DATA *rc_data,RC_DATA *rc_last_data,KEY *key,KEY 
 	//weapon
 	static uint16_t rfcount;
 	
-	
-	
 	if(rc_data->rc.s[0]==0x01&&rc_data->rc.s[1]==0x01)
 	{
 		rbinfo->weap.status=0x00;
@@ -24,10 +22,11 @@ void rc_rbctrl_status_compl(RC_DATA *rc_data,RC_DATA *rc_last_data,KEY *key,KEY 
 		rbinfo->weap.status=0x01;
 		ta++;
 	}
-	if((rc_data->rc.s[0]==0x01&&(rc_data->rc.s[1]==0x02&&rc_last_data->rc.s[1]==0x02))||(rc_data->mouse.press_l==1&&rc_last_data->mouse.press_l==1))
+	if((rc_data->rc.s[0]==0x01&&(rc_data->rc.s[1]==0x02&&rc_last_data->rc.s[1]==0x02)) || (rc_data->mouse.press_l==1&&rc_last_data->mouse.press_l==1))
 		rfcount++;
 	else  
 		rfcount=0;
+		
 	if(rfcount==taskfreq/maxshootfreq)
 	{
 		rbinfo->weap.status=0x01;
@@ -42,20 +41,25 @@ void rc_rbctrl_status_compl(RC_DATA *rc_data,RC_DATA *rc_last_data,KEY *key,KEY 
 	{
 		rbinfo->weap.maglid=0x11;
 	}
+
+
+
 	//gimbal
 	if(rc_data->rc.s[0]==0x03&&rc_data->rc.s[1]==0x01)
 	{
-		rbinfo->gimb.status=0x00;
+		rbinfo->gimb.status=0x00; // manual
 	}
 	if((rc_data->rc.s[0]==0x03&&rc_data->rc.s[1]==0x02)||rc_data->mouse.press_l==0x01)
 	{
-		rbinfo->gimb.status=0x01;
+		rbinfo->gimb.status=0x01; // auto
 	}
+
 	//chassis
 	if(rc_data->rc.s[0]==0x02&&rc_data->rc.s[1]==0x01)
 	{
 		rbinfo->chas.status=(rbinfo->chas.status>>4)<<4;
 	}
+
 	if(rc_data->rc.s[0]==0x02&&rc_data->rc.s[1]==0x02)
 	{
 		rbinfo->chas.status|=0x1;

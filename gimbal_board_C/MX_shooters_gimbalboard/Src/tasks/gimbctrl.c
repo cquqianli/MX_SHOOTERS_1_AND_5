@@ -88,12 +88,12 @@ void gimbctrl(void)
 		gimbmotpid_calc(&pitinfo,&yawinfo,&mpudata,&pitanglepid,&pitspeedpid,&yawanglepid,&yawspeedpid);
 		
 		if(roboctrlinfo.gimb.status!=0xFF)
-		{	
+		{
 			mestocan1_0x1ff_pack(mestocan1_0x1ff);
 			
 		}
 		else
-	  {
+	   {
 			zero_pack(mestocan1_0x1ff);
 		}
 		CAN_send(0x1ff,hcan1,mestocan1_0x1ff);

@@ -2,7 +2,7 @@
 #define robcfg_H
 
 
-#define hero
+#define infa
 
 #define taskperi 2.f //ms
 #define taskfreq 1000.f/taskperi //ms
@@ -16,7 +16,6 @@
 #define maxshootfreq 15
 #define magaspeed 120.f
 #define magadirection 1.f
-0
 #define pit_reduc 2.f
 #define yaw_reduc 1.5f
 
