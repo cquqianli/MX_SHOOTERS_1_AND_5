@@ -1,7 +1,7 @@
 #include "ref.h"
 #include "string.h"
 #include "stdio.h"
-#include "lib_bsps/crc8_crc16.h"
+#include "crc8_crc16.h"
 #include "protocol.h"
 
 

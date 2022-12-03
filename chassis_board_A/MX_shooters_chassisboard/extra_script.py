@@ -17,7 +17,7 @@ env.Append(
         "-mfpu=fpv4-sp-d16",
 	    "-mfloat-abi=hard",
         "-IInc/tasks",
-        "-IInc/lib_bsps",
+        "-IInc/libs_bsps",
         "-IInc/devices"
     ],
     CFLAGS=[
